@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invite</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Georgia', serif;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Your parallax layers -->
+  <img src="1.png" class="layer" data-depth="0.2">
+  <img src="2.png" class="layer" data-depth="0.5">
+  <img src="3.png" class="layer" data-depth="0.9">
+
+  <!-- Audio -->
+  <audio id="bg-music" src="music.mp3" loop preload="auto"></audio>
+
+  <!-- Tap to start -->
+  <div id="overlay">Tap</div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const music = document.getElementById('bg-music');
+
+    overlay.addEventListener('click', () => {
+      music.play().catch(err => console.log(err));
+      overlay.style.display = 'none';
+    });
+
+    // Parallax tilt effect
+    window.addEventListener('deviceorientation', (e) => {
+      const x = e.gamma;
+      const y = e.beta;
+      document.querySelectorAll('.layer').forEach(layer => {
+        const depth = layer.getAttribute('data-depth');
+        const moveX = x * depth;
+        const moveY = y * depth;
+        layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      });
+    });
+  </script>
+
+</body>
+</html>
